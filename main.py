@@ -49,4 +49,4 @@ def trigger_make():
     return jsonify({"status": "triggered"})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.getenv("PORT", 49340)))
+    app.run(host='0.0.0.0', port=int(os.getenv("PORT", 8080)))
