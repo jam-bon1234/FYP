@@ -35,7 +35,7 @@ def add_user():
     email = data.get('email')
     conn = get_connection()
     with conn.cursor() as cursor:
-        cursor.execute("INSERT INTO Users (Fname, email) VALUES (%s, %s)", (name, email))
+        cursor.execute("INSERT INTO Users (UserID, Fname, email) VALUES (%s, %s)", (name, email))
         conn.commit()
     conn.close()
     return jsonify({"status": "ok"})
