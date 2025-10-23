@@ -23,7 +23,7 @@ def get_connection():
 def get_users():
     conn = get_connection()
     with conn.cursor() as cursor:
-        cursor.execute("SELECT UserID, Fname, email FROM Users")
+        cursor.execute("SELECT UserID, Fname, Email FROM Users")
         result = cursor.fetchall()
     conn.close()
     return jsonify(result)
