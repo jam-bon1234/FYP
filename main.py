@@ -31,14 +31,20 @@ def get_users():
 @app.route('/users', methods=['POST'])
 def add_user():
     data = request.json
+    user_id = data.get('id')       # Get UserID from Flutter
     name = data.get('name')
     email = data.get('email')
+
     conn = get_connection()
     with conn.cursor() as cursor:
-        cursor.execute("INSERT INTO Users (UserID, Fname, email) VALUES (%s, %s)", (name, email))
+        cursor.execute(
+            "INSERT INTO Users (UserID, Fname, email) VALUES (%s, %s, %s)",
+            (user_id, name, email)   # Match the placeholders
+        )
         conn.commit()
     conn.close()
     return jsonify({"status": "ok"})
+
 
 @app.route('/trigger', methods=['POST'])
 def trigger_make():
