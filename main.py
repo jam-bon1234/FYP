@@ -32,14 +32,15 @@ def get_users():
 def add_user():
     data = request.json
     user_id = data.get('id')       # Get UserID from Flutter
-    name = data.get('name')
+    fname = data.get('fname')
+    lname = data.get('lname')
     email = data.get('email')
 
     conn = get_connection()
     with conn.cursor() as cursor:
         cursor.execute(
             "INSERT INTO Users (UserID, Fname, Lname, email) VALUES (%s, %s, %s, %s)",
-            (user_id, name, email)   # Match the placeholders
+            (user_id, fname, lname, email)   # Match the placeholders
         )
         conn.commit()
     conn.close()
