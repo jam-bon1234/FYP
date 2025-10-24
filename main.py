@@ -50,7 +50,7 @@ def add_user():
 def trigger_make():
     # Example Make.com webhook call
     import requests
-    webhook_url = "old9ixd4qaj6breiddwhprpijm94iinz@hook.eu2.make.com"
+    webhook_url = "https://old9ixd4qaj6breiddwhprpijm94iinz@hook.eu2.make.com"
     requests.post(webhook_url, json={"action": "demo"})
     return jsonify({"status": "triggered"})
 
