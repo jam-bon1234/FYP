@@ -23,7 +23,7 @@ def get_connection():
 def get_users():
     conn = get_connection()
     with conn.cursor() as cursor:
-        cursor.execute("SELECT UserID, Fname, Email FROM Users")
+        cursor.execute("SELECT UserID, Fname, Lname, Email FROM Users")
         result = cursor.fetchall()
     conn.close()
     return jsonify(result)
@@ -38,7 +38,7 @@ def add_user():
     conn = get_connection()
     with conn.cursor() as cursor:
         cursor.execute(
-            "INSERT INTO Users (UserID, Fname, email) VALUES (%s, %s, %s)",
+            "INSERT INTO Users (UserID, Fname, Lname, email) VALUES (%s, %s, %s, %s)",
             (user_id, name, email)   # Match the placeholders
         )
         conn.commit()
