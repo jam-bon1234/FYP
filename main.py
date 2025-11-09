@@ -6,9 +6,10 @@ from dotenv import load_dotenv
 import traceback
 
 load_dotenv()
-
+# Code for creating database connections from tutorials slightly altered to allow for cross-origin resource sharing
 app = Flask(__name__)
 CORS(app)
+
 
 def get_connection():
     return pymysql.connect(
@@ -20,7 +21,6 @@ def get_connection():
         cursorclass=pymysql.cursors.DictCursor
     )
 
-# ------------------- USERS -------------------
 
 @app.route('/users', methods=['GET'])
 def get_users():
@@ -56,9 +56,7 @@ def add_user():
     except Exception as e:
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
-
-# ------------------- PREFERENCES -------------------
-
+# Code for post and get methods practiced in Advanced Web Development Lectures altered to send success/error messages
 @app.route('/preferences', methods=['POST'])
 def add_preferences():
     try:
@@ -99,7 +97,6 @@ def add_preferences():
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
-# ------------------- TRIGGER -------------------
 
 @app.route('/trigger', methods=['POST'])
 def trigger_make():
@@ -112,7 +109,6 @@ def trigger_make():
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
-# ------------------- RUN -------------------
 
 if __name__ == '__main__':
     port = int(os.getenv("PORT", 8080))
