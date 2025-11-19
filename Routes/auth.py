@@ -34,38 +34,58 @@ def login():
         return jsonify({"error": str(e)}), 500
 
 
+from flask import request, jsonify, Blueprint
+from db import get_connection
+import traceback
+
+auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
+
 @auth_bp.route('/signup', methods=['POST'])
 def signup():
     try:
         data = request.json
+        fname = data.get('FName')
+        lname = data.get('LName')
         email = data.get('Email')
-        password = data.get('Password')
+        age = data.get('Age')
 
-        if not email or not password:
-            return jsonify({"error": "Email and password required"}), 400
+        if not all([fname, lname, email, age]):
+            return jsonify({"error": "FName, LName, Email, and Age are required"}), 400
 
         conn = get_connection()
         with conn.cursor() as cursor:
             # Check if email already exists
             cursor.execute("SELECT * FROM Users WHERE Email=%s", (email,))
-            if cursor.fetchone():
+            existing_user = cursor.fetchone()
+            if existing_user:
                 return jsonify({"error": "Email already registered"}), 400
 
-            # Generate new UserID
+            # Get current max UserID and increment it
             cursor.execute("SELECT MAX(UserID) AS max_id FROM Users")
-            max_id = cursor.fetchone()['max_id']
-            new_user_id = (max_id or 0) + 1
+            result = cursor.fetchone()
+            user_id = (result['max_id'] or 0) + 1
 
-            # Insert user
+            total_points = 0  # default points
+
             cursor.execute(
-                "INSERT INTO Users (UserID, Email, Password) VALUES (%s, %s, %s)",
-                (new_user_id, email, password)
+                """
+                INSERT INTO Users (UserID, FName, LName, Email, Age, TotalPoints)
+                VALUES (%s, %s, %s, %s, %s, %s)
+                """,
+                (user_id, fname, lname, email, age, total_points)
             )
             conn.commit()
 
         conn.close()
-        return jsonify({"status": "ok", "UserID": new_user_id}), 200
+        return jsonify({
+            "status": "ok",
+            "UserID": user_id,
+            "FName": fname,
+            "LName": lname,
+            "TotalPoints": total_points
+        }), 200
 
     except Exception as e:
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
+
