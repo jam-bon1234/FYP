@@ -5,7 +5,7 @@ from app import app
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-@app.route('/login', methods=['POST'])
+@auth_bp.route('/login', methods=['POST'])
 def login():
     try:
         data = request.json
@@ -34,7 +34,7 @@ def login():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route('/signup', methods=['POST'])
+@auth_bp.route('/signup', methods=['POST'])
 def signup():
     try:
         data = request.json
