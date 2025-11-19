@@ -48,17 +48,23 @@ def signup():
         with conn.cursor() as cursor:
             # Check if email already exists
             cursor.execute("SELECT * FROM Users WHERE Email=%s", (email,))
-            existing_user = cursor.fetchone()
-            if existing_user:
+            if cursor.fetchone():
                 return jsonify({"error": "Email already registered"}), 400
 
+            # Generate new UserID
+            cursor.execute("SELECT MAX(UserID) AS max_id FROM Users")
+            max_id = cursor.fetchone()['max_id']
+            new_user_id = (max_id or 0) + 1
+
+            # Insert user
             cursor.execute(
-                "INSERT INTO Users (Email, Password) VALUES (%s, %s)",
-                (email, password)
+                "INSERT INTO Users (UserID, Email, Password) VALUES (%s, %s, %s)",
+                (new_user_id, email, password)
             )
             conn.commit()
+
         conn.close()
-        return jsonify({"status": "ok"}), 200
+        return jsonify({"status": "ok", "UserID": new_user_id}), 200
 
     except Exception as e:
         traceback.print_exc()
