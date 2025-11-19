@@ -1,11 +1,9 @@
 from db import get_connection
-from app import app
 from flask import request, jsonify, Blueprint
 import traceback
 
-preferences_bp = Blueprint('preferences', __name__)
-
-app.route('/preferences', methods=['POST'])
+preferences_bp = Blueprint('preferences', __name__, url_prefix='/preferences')
+@preferences_bp.route('/preferences', methods=['POST'])
 def add_preferences():
     try:
         data = request.json

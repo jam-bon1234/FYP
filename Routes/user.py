@@ -3,9 +3,9 @@ from flask import request, jsonify, Blueprint
 from db import get_connection
 from app import app
 
-user_bp = Blueprint('user', __name__)
+user_bp = Blueprint('user', __name__, url_prefix='/user')
 
-@app.route('/users', methods=['GET'])
+@user_bp.route('/users', methods=['GET'])
 def get_users():
     try:
         conn = get_connection()
@@ -17,8 +17,7 @@ def get_users():
     except Exception as e:
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
-
-@app.route('/users', methods=['POST'])
+@user_bp.route('/users', methods=['POST'])
 def add_user():
     try:
         data = request.json
