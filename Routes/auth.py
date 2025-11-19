@@ -48,8 +48,9 @@ def signup():
         lname = data.get('LName')
         email = data.get('Email')
         age = data.get('Age')
+        password = data.get('Password')
 
-        if not all([fname, lname, email, age]):
+        if not all([fname, lname, email, age, password]):
             return jsonify({"error": "FName, LName, Email, and Age are required"}), 400
 
         conn = get_connection()
@@ -69,10 +70,10 @@ def signup():
 
             cursor.execute(
                 """
-                INSERT INTO Users (UserID, FName, LName, Email, Age, TotalPoints)
+                INSERT INTO Users (UserID, FName, LName, Email, Age, TotalPoints, Password)
                 VALUES (%s, %s, %s, %s, %s, %s)
                 """,
-                (user_id, fname, lname, email, age, total_points)
+                (user_id, fname, lname, email, age, total_points, password)
             )
             conn.commit()
 
@@ -82,7 +83,8 @@ def signup():
             "UserID": user_id,
             "FName": fname,
             "LName": lname,
-            "TotalPoints": total_points
+            "TotalPoints": total_points,
+            "Password": password
         }), 200
 
     except Exception as e:
