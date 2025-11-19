@@ -3,7 +3,7 @@ from db import get_connection
 import traceback
 from app import app
 
-auth_bp = Blueprint('auth', __name__)
+auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @app.route('/login', methods=['POST'])
 def login():
