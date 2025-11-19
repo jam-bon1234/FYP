@@ -2,8 +2,8 @@ from flask import request, jsonify, Blueprint
 from db import get_connection
 import traceback
 
-
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
+
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
@@ -18,14 +18,21 @@ def login():
         conn = get_connection()
         with conn.cursor() as cursor:
             cursor.execute(
-                "SELECT UserID, Email FROM Users WHERE Email=%s AND Password=%s",
+                "SELECT UserID, FName, LName, Email, Age, TotalPoints FROM Users WHERE Email=%s AND Password=%s",
                 (email, password)
             )
             user = cursor.fetchone()
         conn.close()
 
         if user:
-            return jsonify({"UserID": user['UserID'], "Email": user['Email']}), 200
+            return jsonify({
+                "UserID": user['UserID'],
+                "FName": user['FName'],
+                "LName": user['LName'],
+                "Email": user['Email'],
+                "Age": user['Age'],
+                "TotalPoints": user['TotalPoints']
+            }), 200
         else:
             return jsonify({"error": "Invalid credentials"}), 401
 
@@ -45,7 +52,7 @@ def signup():
         password = data.get('Password')
 
         if not all([fname, lname, email, age, password]):
-            return jsonify({"error": "FName, LName, Email, and Age are required"}), 400
+            return jsonify({"error": "FName, LName, Email, Age, and Password are required"}), 400
 
         conn = get_connection()
         with conn.cursor() as cursor:
@@ -77,11 +84,11 @@ def signup():
             "UserID": user_id,
             "FName": fname,
             "LName": lname,
-            "TotalPoints": total_points,
-            "Password": password
-        }), 200
+            "Email": email,
+            "Age": age,
+            "TotalPoints": total_points
+        }), 201
 
     except Exception as e:
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
-
