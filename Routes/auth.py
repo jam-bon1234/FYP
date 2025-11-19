@@ -34,12 +34,6 @@ def login():
         return jsonify({"error": str(e)}), 500
 
 
-from flask import request, jsonify, Blueprint
-from db import get_connection
-import traceback
-
-auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
-
 @auth_bp.route('/signup', methods=['POST'])
 def signup():
     try:
