@@ -1,7 +1,7 @@
 import traceback
 from flask import request, jsonify, Blueprint
 from db import get_connection
-from app import app
+
 
 user_bp = Blueprint('user', __name__, url_prefix='/user')
 
