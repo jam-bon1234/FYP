@@ -71,7 +71,7 @@ def signup():
             cursor.execute(
                 """
                 INSERT INTO Users (UserID, FName, LName, Email, Age, TotalPoints, Password)
-                VALUES (%s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
                 """,
                 (user_id, fname, lname, email, age, total_points, password)
             )
