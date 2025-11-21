@@ -1,9 +1,7 @@
-from flask import request, jsonify, Blueprint
-from db import get_connection
+from flask import request, jsonify
+from app import get_connection
 import traceback
-
-auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
-
+from blueprints import auth_bp
 
 @auth_bp.route('/login', methods=['POST'])
 def login():

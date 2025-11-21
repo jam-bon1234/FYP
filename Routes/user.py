@@ -1,9 +1,7 @@
 import traceback
-from flask import request, jsonify, Blueprint
-from db import get_connection
-
-
-user_bp = Blueprint('user', __name__, url_prefix='/user')
+from flask import request, jsonify
+from app import get_connection
+from blueprints import user_bp
 
 @user_bp.route('/users', methods=['GET'])
 def get_users():

@@ -1,8 +1,8 @@
-from db import get_connection
-from flask import request, jsonify, Blueprint
+from app import get_connection
+from flask import request, jsonify
 import traceback
+from blueprints import preferences_bp
 
-preferences_bp = Blueprint('preferences', __name__, url_prefix='/preferences')
 @preferences_bp.route('/preferences', methods=['POST'])
 def add_preferences():
     try:
