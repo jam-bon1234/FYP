@@ -1,12 +1,11 @@
 from flask import Blueprint
 
-preferences_bp = Blueprint('preferences', __name__, url_prefix='/preferences')
+from flask import Blueprint
 
-auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
-
-user_bp = Blueprint('user', __name__, url_prefix='/user')
-
-maps_bp = Blueprint("maps", __name__, url_prefix='/generate_route')
+preferences_bp = Blueprint('preferences', __name__)
+auth_bp = Blueprint('auth', __name__)
+user_bp = Blueprint('user', __name__)
+maps_bp = Blueprint("maps", __name__)
 
 def register_blueprints(app):
     app.register_blueprint(auth_bp, url_prefix="/auth")
