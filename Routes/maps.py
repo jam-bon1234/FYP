@@ -3,6 +3,8 @@ import requests
 import os
 from dotenv import load_dotenv
 from blueprints import maps_bp
+from polyline import decode as decode_polyline
+
 
 load_dotenv()
 
@@ -70,19 +72,24 @@ def generate_route():
     # Step 1: Get POIs
     pois = get_pois(lat, lng, interests)
 
-    # Step 2: Pick first POI (same logic as your original)
     if not pois:
         return jsonify({"error": "No POIs found"}), 404
 
+    # Step 2: Select a POI (first one for now)
     end = pois[0]
-    polyline = get_directions(lat, lng, end["lat"], end["lng"], mode)
 
-    # Step 3: Send back to Flutter
+    # Step 3: Get encoded polyline
+    poly = get_directions(lat, lng, end["lat"], end["lng"], mode)
+
+    # Step 4: Decode polyline to list of [lat, lng] for Flutter
+    decoded = decode_polyline(poly) if poly else []
+
+    # Step 5: Return data
     return jsonify({
         "start": {"lat": lat, "lng": lng},
         "end": end,
         "pois": pois,
-        "polyline": polyline,
+        "polyline": decoded,        # <-- Flutter-friendly
         "mode": mode,
         "preferred_time": preferred_time
     })

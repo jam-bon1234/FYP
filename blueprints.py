@@ -6,7 +6,7 @@ auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 user_bp = Blueprint('user', __name__, url_prefix='/user')
 
-maps_bp = Blueprint("generate_route", __name__, url_prefix='/generate_route')
+maps_bp = Blueprint("maps", __name__, url_prefix='/generate_route')
 
 def register_blueprints(app):
     app.register_blueprint(auth_bp, url_prefix="/auth")
